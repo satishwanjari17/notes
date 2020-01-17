@@ -1,4 +1,4 @@
-myApp.controller("loginAndHomeController",function($state,noteService){
+myApp.controller("loginAndHomeController",function($state,noteService,$routeParams){
     var loginAndHome = this;
 
     loginAndHome.signUp = signUp;
@@ -41,7 +41,8 @@ myApp.controller("loginAndHomeController",function($state,noteService){
     }
 
     function fetchNotes(){
-                
+        console.log(" $routeParams ",$routeParams);
+        
     }
     function createNotes(){
         
