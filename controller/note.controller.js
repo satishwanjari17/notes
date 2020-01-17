@@ -2,6 +2,7 @@ const Note = require('../model/note.model.js');
 
 // Create and Save a new Note
 exports.create = (req, res) => {
+        console.log(" create ",req.body)
         // Validate request
         if(!req.body.content) {
             return res.status(400).send({
@@ -39,28 +40,6 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single note with a noteId
-exports.findOne = (req, res) => {
-    Note.findById(req.params.noteId)
-    .then(note => {
-        if(!note) {
-            return res.status(404).send({
-                message: "Note not found with id " + req.params.noteId
-            });            
-        }
-        res.send(note);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Note not found with id " + req.params.noteId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error retrieving note with id " + req.params.noteId
-        });
-    });
-};
-
 // Update a note identified by the noteId in the request
 exports.update = (req, res) => {
     // Validate Request
@@ -71,7 +50,7 @@ exports.update = (req, res) => {
     }
 
     // Find note and update it with the request body
-    Note.findByIdAndUpdate(req.params.noteId, {
+    Note.findByIdAndUpdate(req.body._id, {
         title: req.body.title || "Untitled Note",
         content: req.body.content
     }, {new: true})

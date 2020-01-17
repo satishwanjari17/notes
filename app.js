@@ -57,13 +57,13 @@ app.post("/user",user.createUser);
 app.post("/login",user.loginUser)
 
  // Retrieve all Notes
- app.get('/notes', notes.findAll);
+ app.get('/notes/:userId', notes.findAll);
 
  // Retrieve a single Note with noteId
- app.get('/notes/:noteId', notes.findOne);
+ app.post('/createNote', notes.create);
 
  // Update a Note with noteId
- app.put('/notes/:noteId', notes.update);
+ app.put('/updateNotes', notes.update);
 
  // Delete a Note with noteId
  app.delete('/notes/:noteId', notes.delete);

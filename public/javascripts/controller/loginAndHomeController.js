@@ -1,4 +1,4 @@
-myApp.controller("loginAndHomeController",function($state,noteService,$routeParams){
+myApp.controller("loginAndHomeController",function($state,noteService, $stateParams){
     var loginAndHome = this;
 
     loginAndHome.signUp = signUp;
@@ -9,15 +9,25 @@ myApp.controller("loginAndHomeController",function($state,noteService,$routePara
     loginAndHome.editNotes = editNotes;
     loginAndHome.updateNots = updateNots;
     loginAndHome.deleteNotes = deleteNotes;
+    loginAndHome.logout = logout;
+    loginAndHome.updateButton = false;
 
-//     console.log(" noteService ",noteService);
+
     
+        function isUserLogin(){
+                if($stateParams.userId){
+                        return  $stateParams.userId;
+                }else{
+                $state.go('/')
+                // return null;
+                }
+        }
 
-    function signUp(){
+
+        function signUp(){
             noteService.signUp(loginAndHome.signup).then((response)=>{
                         alert("Registration successful");
                         $state.go("home",{userId:response.data._id});
-
             },(err)=>{
                         if(err.status == 500){
                                 alert("Username already exist")
@@ -25,8 +35,8 @@ myApp.controller("loginAndHomeController",function($state,noteService,$routePara
             })
         }
 
-    function login(){
-                 noteService.login(loginAndHome.userLogin).then((response)=>{
+        function login(){
+                noteService.login(loginAndHome.userLogin).then((response)=>{
                         alert("Login successful");
                         $state.go("home",{userId:response.data[0]._id});
                 },(err)=>{
@@ -34,27 +44,61 @@ myApp.controller("loginAndHomeController",function($state,noteService,$routePara
                                 alert("username or password was wrong")
                         }
                 })
-    }
+        }
 
-    function reset(){
-            $state.reload();
-    }
+        function reset(){
+                $state.reload();
+        }
 
-    function fetchNotes(){
-        console.log(" $routeParams ",$routeParams);
-        
-    }
-    function createNotes(){
-        
-    }
-    function editNotes(){
-        
-    }
-    function updateNots(){
-        
-    }
-    function deleteNotes(){
-        
-    }
+        function logout(){
+                $state.go('/')
+        }
+
+        function fetchNotes(){
+                if(isUserLogin()){
+                        noteService.fetchNotes({userId:isUserLogin()}).then((response)=>{
+                                loginAndHome.noteData = response.data
+                        },(err)=>{
+                                
+                        })
+                } 
+        }
+
+        function createNotes(){
+                if(isUserLogin()){
+                        loginAndHome.notesData.userId = isUserLogin();
+                        noteService.createNotes(loginAndHome.notesData).then((response)=>{
+                                $state.reload();
+                        },(err)=>{
+                                alert("Someting wents wrong")
+                        })
+                } 
+        }
+
+        function editNotes(editNoteData){
+                loginAndHome.updateButton = true;
+                loginAndHome.notesData = editNoteData;
+        }
+    
+        function updateNots(){
+                if(isUserLogin()){
+                        loginAndHome.notesData.userId = isUserLogin();
+                        noteService.updateNotes(loginAndHome.notesData).then((response)=>{
+                                $state.reload();
+                        },(err)=>{
+                                alert("Someting wents wrong")
+                        })
+                } 
+        }
+
+        function deleteNotes(deleteNoteData){
+                if(isUserLogin()){
+                        noteService.deleteNotes(deleteNoteData).then((response)=>{
+                                $state.reload();
+                        },(err)=>{
+                                alert("Someting wents wrong")
+                        })
+                }
+        }
     
 })

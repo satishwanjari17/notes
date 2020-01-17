@@ -1,14 +1,19 @@
 <table ng-init="loginAndHome.fetchNotes()">
     <tr>
         <td>Title :</td>
-        <td><input type="text" placeholder="Untitle Note"> </td>
+        <td><input type="text" placeholder="Untitle Note" ng-model="loginAndHome.notesData.title"> </td>
     </tr>
     <tr>
         <td>Note:</td>
-        <td> <textarea name="" id="" cols="30" rows="10" placeholder="Write note"></textarea> </td>
+        <td> <textarea name="" id="" cols="30" rows="10" placeholder="Write note" ng-model="loginAndHome.notesData.content"></textarea> </td>
     </tr>
     <tr>
-        <td><input type="submit"> <input type="reset"></td>
+        <td>
+            <input type="submit" ng-show="!loginAndHome.updateButton" ng-click="loginAndHome.createNotes()"> 
+            <input type="submit" ng-show="loginAndHome.updateButton" ng-click="loginAndHome.updateNots()" value="Update"> 
+            <input type="reset" ng-click="loginAndHome.reset()">
+            <input type="reset" ng-click="loginAndHome.logout()" value="logout">
+        </td>
     </tr>
 </table>
 
@@ -21,10 +26,13 @@
         <th>Note</th>
         <th>Action</th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>new title</td>
-        <td>notssss</td>
-        <td><input type="submit" value="edit"> <input type="submit" value="delete"></td>
+    <tr ng-repeat="eachnotes in loginAndHome.noteData">
+        <td>{{$index+1}}</td>
+        <td>{{eachnotes.title}}</td>
+        <td>{{eachnotes.content}}</td>
+        <td>
+            <input type="submit" value="edit" ng-click="loginAndHome.editNotes(eachnotes)"> 
+            <input type="submit" value="delete" ng-click="loginAndHome.deleteNotes(eachnotes)">
+        </td>
     </tr>
 </table>
