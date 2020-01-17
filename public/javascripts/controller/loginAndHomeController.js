@@ -1,4 +1,4 @@
-myApp.controller("loginAndHomeController",function($state){
+myApp.controller("loginAndHomeController",function($state,noteService){
     var loginAndHome = this;
 
     loginAndHome.signUp = signUp;
@@ -10,10 +10,18 @@ myApp.controller("loginAndHomeController",function($state){
     loginAndHome.updateNots = updateNots;
     loginAndHome.deleteNotes = deleteNotes;
 
+//     console.log(" noteService ",noteService);
+    
 
     function signUp(){
-            console.log(" signUp ",loginAndHome.signup);
-            
+            noteService.signUp(loginAndHome.signup).then((response)=>{
+                        console.log(" signUp response ",response);
+                        alert("Registration successful")
+            },(err)=>{
+                        if(err.status == 500){
+                                alert("Username already exist")
+                        }
+            })
         }
 
     function login(){
