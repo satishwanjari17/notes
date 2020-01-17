@@ -22,12 +22,13 @@ exports.createUser = (req,res)=>{
 exports.loginUser = (req,res)=>{
     User.find({username:req.body.userName,password:req.body.password})
     .then(user => {
-        if(!user) {
+        if(user.length == 0) {
             return res.status(404).send({
                 message: "username or password wrong "
             });            
+        }else{
+            res.send(user);
         }
-        res.send(user);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving notes."

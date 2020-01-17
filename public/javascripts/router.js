@@ -9,7 +9,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         controller: "loginAndHomeController as loginAndHome"
     })
     .state("home", {
-        url:"/home",
+        url:"/home:userId",
         templateUrl: "home/home.html",
         controller: "loginAndHomeController as loginAndHome"
     })

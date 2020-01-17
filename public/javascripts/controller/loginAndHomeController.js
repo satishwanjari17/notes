@@ -15,8 +15,9 @@ myApp.controller("loginAndHomeController",function($state,noteService){
 
     function signUp(){
             noteService.signUp(loginAndHome.signup).then((response)=>{
-                        console.log(" signUp response ",response);
-                        alert("Registration successful")
+                        alert("Registration successful");
+                        $state.go("home",{userId:response.data._id});
+
             },(err)=>{
                         if(err.status == 500){
                                 alert("Username already exist")
@@ -25,8 +26,14 @@ myApp.controller("loginAndHomeController",function($state,noteService){
         }
 
     function login(){
-            
-            console.log(" login ",loginAndHome.userLogin);
+                 noteService.login(loginAndHome.userLogin).then((response)=>{
+                        alert("Login successful");
+                        $state.go("home",{userId:response.data[0]._id});
+                },(err)=>{
+                        if(err.status == 404){
+                                alert("username or password was wrong")
+                        }
+                })
     }
 
     function reset(){
@@ -34,7 +41,7 @@ myApp.controller("loginAndHomeController",function($state,noteService){
     }
 
     function fetchNotes(){
-        
+                
     }
     function createNotes(){
         
