@@ -25,25 +25,33 @@ myApp.controller("loginAndHomeController",function($state,noteService, $statePar
 
 
         function signUp(){
-            noteService.signUp(loginAndHome.signup).then((response)=>{
-                        alert("Registration successful");
-                        $state.go("home",{userId:response.data._id});
-            },(err)=>{
-                        if(err.status == 500){
-                                alert("Username already exist")
-                        }
-            })
+                if(loginAndHome.signup && loginAndHome.signup.userName && loginAndHome.signup.password){
+                        noteService.signUp(loginAndHome.signup).then((response)=>{
+                                    alert("Registration successful");
+                                    $state.go("home",{userId:response.data._id});
+                        },(err)=>{
+                                    if(err.status == 500){
+                                            alert("Username already exist")
+                                    }
+                        })
+                }else{
+                        alert("Please Chack all fields")
+                }
         }
 
         function login(){
-                noteService.login(loginAndHome.userLogin).then((response)=>{
-                        alert("Login successful");
-                        $state.go("home",{userId:response.data[0]._id});
-                },(err)=>{
-                        if(err.status == 404){
-                                alert("username or password was wrong")
-                        }
-                })
+                if(loginAndHome.userLogin && loginAndHome.userLogin.userName && loginAndHome.userLogin.password){
+                        noteService.login(loginAndHome.userLogin).then((response)=>{
+                                alert("Login successful");
+                                $state.go("home",{userId:response.data[0]._id});
+                        },(err)=>{
+                                if(err.status == 404){
+                                        alert("username or password was wrong")
+                                }
+                        })
+                }else{
+                        alert("Please Chack all fields")
+                }
         }
 
         function reset(){
